@@ -2,6 +2,21 @@
 $titulo = "Cadastro de produtos";
 include 'cabecalho.php';?>
 <h1>Cadastrar novo produto</h1>
+<?php
+    include '../vendor/autoload.php';
+    if($_POST){
+        $p = new App\Model\Produto();
+        $p->setDescricao($_POST['descricao']);
+        $p->setValor($_POST['valor']);
+        $p->setQuantidade($_POST['quantidade']);
+        $p->setValidade($_POST['validade']);
+
+        $pd = new App\DAO\ProdutoDAO();
+        if($pd->inserir($p)){
+            echo "<div class='alert alert-danger'>Produto cadastrado com Sucesso!!</div>";
+        }
+    }
+?>
 <form action="produto-inserir.php" method="post">
     <div class="form-group">
         <label for="descricao"><span class="text-danger">*</span> Descrição</label>
