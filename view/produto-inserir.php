@@ -7,10 +7,10 @@ include 'cabecalho.php';?>
     if($_POST){
         $p = new App\Model\Produto();
         $p->setDescricao($_POST['descricao']);
-        $p->setValor($_POST['valor']);
         $p->setQuantidade($_POST['quantidade']);
-        $p->setValidade($_POST['validade']);
 
+        $p->setValor($_POST['valor'] ? (\App\Helper\Moeda::set($_POST['valor'])) : null);
+        $p->setValidade($_POST['validade'] ? (\App\Helper\Data::set($_POST['validade'])) : null);
         $pd = new App\DAO\ProdutoDAO();
         if($pd->inserir($p)){
             echo "<div class='alert alert-danger'>Produto cadastrado com Sucesso!!</div>";

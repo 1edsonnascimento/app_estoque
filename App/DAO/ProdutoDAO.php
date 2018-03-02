@@ -27,4 +27,42 @@ class ProdutoDAO extends Conexao
         }
     }
 
+    public function pesquisar($produto = null){
+        $sql = "select * from produtos where descricao like :descricao";
+        try{
+            $consulta = $this->conexao->prepare($sql);
+            $consulta->bindValue(":descricao","%".$produto->getDescricao()."%");
+            $consulta->execute();
+            return $consulta->fetchAll(\PDO::FETCH_CLASS,"App\Model\Produto");
+        }catch (\PDOException $e){
+            echo "<div class='alert alert-danger'>Erro: {$e->getMessage()}</div>";
+        }
+    }
+
+    public function excluir($produto){
+        $sql ="delete from produtos where id = :id";
+        try{
+            $i = $this->conexao->prepare($sql);
+            $i->bindValue(":id",$produto->getId());
+            $i->execute();
+            return true;
+        }catch (\PDOException $e){
+            echo "<div class='alert alert-danger'>{$e->getMessage()}</div>";
+            return false;
+        }
+    }
+
+
+    public function pesquisarUnico($produto){
+        $sql = "select * from produtos where id = :id";
+        try{
+            $consulta = $this->conexao->prepare($sql);
+            $consulta->bindValue(":id",$produto->getId());
+            $consulta->execute();
+            return $consulta->fetch(\PDO::FETCH_CLASS,"App\Model\Produto");
+        }catch (\PDOException $e){
+            echo "<div class='alert alert-danger'>Erro: {$e->getMessage()}</div>";
+        }
+    }
+
 }

@@ -15,30 +15,50 @@ include 'cabecalho.php';?>
         Pesquisar
     </button>
 </form>
+<?php
+include '../vendor/autoload.php';
+
+if($_GET['msg'] && $_GET['msg'] ==1 )
+    echo "<div class='alert alert-success'>Produto excluido com sucesso!!</div>";
+
+$p = new \App\Model\Produto();
+isset($_GET['descricao'])? $p->setDescricao($_GET['descricao']): $p->setDescricao("");
+$pDao = new App\DAO\ProdutoDAO();
+$produtos = $pDao->pesquisar($p);  //os produtos sao retornados do tipo de uma classe la na pesquisa por isso eles podem ser acessados agora
+
+ if(count($produtos) > 0){ ?>
     <table class='table table-striped table-hover'>
-        <tr class='text-center'>
+        <tr>
             <th>ID</th>
-            <th>Descrição</th>
+            <th class='text-left'>Descrição</th>
             <th>Quantidade</th>
             <th>Valor</th>
             <th>Validade</th>
             <th></th>
             <th></th>
+
         </tr>
-        <tr class='text-center'>
-            <td>1</td>
-            <td class='text-left'>Sabão em pó</td>
-            <td>10,0</td>
-            <td>3,45</td>
-            <td>10/12/2018</td>
-            <td>
-                <a href='produto-excluir.php?id=1' class='btn btn-danger'><img src='../assets/images/ic_delete_white_24px.svg'> Excluir</a>
-            </td>
-            <td>
-                <a href='produto-alterar.php?id=1' class='btn btn-warning'><img src='../assets/images/ic_mode_edit_black_24px.svg'> Alterar</a>
-            </td>
-        </tr>
+       <?php
+       foreach ($produtos as $itens){
+           echo "<tr class='text-center'>";
+           echo "<td>{$itens->getId()}</td>";
+           echo "<td class='text-left'>{$itens->getDescricao()}</td>";
+           echo "<td>".\App\Helper\Moeda::get($itens->getQuantidade())."</td>";
+           echo "<td>".\App\Helper\Moeda::get($itens->getValor())."</td>";
+           echo "<td>".\App\Helper\Data::get($itens->getValidade())."</td>";
+           echo "<td><a class='btn btn-danger' href='produto-excluir.php?id={$itens->getId()}'>Excluir</a></td>";
+           echo "<td><a class='btn btn-warning' href='produto-alterar.php?id={$itens->getId()}'>Alterar</a></td>";
+           echo "<tr>";
+       }
+       ?>
+
     </table>
 
 
-<?php include 'rodape.php';?>
+<?php }else{
+        echo "<div class='alert alert-danger'>Nenhum produto encontrado</div>";
+    }
+
+include 'rodape.php';
+
+    ?>
