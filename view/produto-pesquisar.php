@@ -20,7 +20,8 @@ include '../vendor/autoload.php';
 
 if($_GET['msg'] && $_GET['msg'] ==1 )
     echo "<div class='alert alert-success'>Produto excluido com sucesso!!</div>";
-
+if($_GET['msg'] && $_GET['msg'] == 2 )
+    echo "<div class='alert alert-success'>Alteração feita com sucesso!!</div>";
 $p = new \App\Model\Produto();
 isset($_GET['descricao'])? $p->setDescricao($_GET['descricao']): $p->setDescricao("");
 $pDao = new App\DAO\ProdutoDAO();
