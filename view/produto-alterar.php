@@ -5,6 +5,13 @@ include 'cabecalho.php';?>
 <?php
 include '../vendor/autoload.php';
 
+
+//alterei aqui
+$uDao = new \App\DAO\UsuarioDAO();
+$uDao->verificar();
+
+
+
 if($_POST){
     $p2 = new \App\Model\Produto();
     $p2->setId($_POST['id']);

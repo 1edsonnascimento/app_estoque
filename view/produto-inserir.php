@@ -4,7 +4,20 @@ include 'cabecalho.php';?>
 <h1>Cadastrar novo produto</h1>
 <?php
     include '../vendor/autoload.php';
-    if($_POST){
+
+
+
+//alterei aqui
+$uDao = new \App\DAO\UsuarioDAO();
+$uDao->verificar();
+
+
+
+
+
+
+
+if($_POST){
         $p = new App\Model\Produto();
         $p->setDescricao($_POST['descricao']);
         $p->setQuantidade($_POST['quantidade']);
